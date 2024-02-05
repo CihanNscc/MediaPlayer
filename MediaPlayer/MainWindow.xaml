@@ -18,13 +18,34 @@
             Executed="Stop_Executed"></CommandBinding>
     </Window.CommandBindings>
     <StackPanel>
-        <Button Content="Open FIle" FontSize="32" Width="Auto" Height="Auto" Margin="10" Click="Open_File_Btn_Click"></Button>
-        <TextBlock x:Name="fileNameBox" FontSize="32"></TextBlock>
+        <Grid Width="500px" Margin="0, 0, 0, 30px">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Content="Open File" FontSize="16" Width="100px" Height="Auto" Margin="10" Click="Open_File_Btn_Click"></Button>
+            <Button Grid.Column="1" x:Name="playingButton" Content="Show Playing" FontSize="16" Width="100px" Height="Auto" Margin="10" Click="Show_Playing_Btn_Click"></Button>
+            <Button Grid.Column="2" x:Name="tagsButton" Content="Show Tags" FontSize="16" Width="100px" Height="Auto" Margin="10" Click="Show_Tags_Btn_Click"></Button>
+        </Grid>
+        <local:TagsWindow x:Name="tagsWindow" />
+        <local:PlayingWindow x:Name="playingWindow" />
         <MediaElement x:Name="myMediaPlayer" UnloadedBehavior="Manual" LoadedBehavior="Manual"></MediaElement>
-        <Button Content="Show Tags" FontSize="32" Width="Auto" Height="Auto" Margin="10" Click="Show_Tags_Btn_Click"></Button>
-        <TextBlock x:Name="tagNameBox" FontSize="32"></TextBlock>
-        <Button Content="Play" FontSize="32" Width="Auto" Height="Auto" Margin="10" Command="Play"></Button>
-        <Button Content="Pause" FontSize="32" Width="Auto" Height="Auto" Margin="10" Command="Pause"></Button>
-        <Button Content="Stop" FontSize="32" Width="Auto" Height="Auto" Margin="10" Command="Stop"></Button>
+        <Grid Width="500px" Margin="0, 30px, 0, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Content="Play" FontSize="16" Width="100px" Height="Auto" Margin="10" Command="Play"></Button>
+            <Button Grid.Column="1" Content="Pause" FontSize="16" Width="100px" Height="Auto" Margin="10" Command="Pause"></Button>
+            <Button Grid.Column="2" Content="Stop" FontSize="16" Width="100px" Height="Auto" Margin="10" Command="Stop"></Button>
+        </Grid>
     </StackPanel>
 </Window>
