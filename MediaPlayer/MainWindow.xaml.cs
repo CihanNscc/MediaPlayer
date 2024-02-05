@@ -19,6 +19,8 @@ namespace MediaPlayer
     {
         TagLib.File currentFile;
 
+        private bool mediaPlayerIsPlaying = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,7 +39,6 @@ namespace MediaPlayer
             currentFile = TagLib.File.Create(ofd.FileName);
 
             myMediaPlayer.Source = new Uri(ofd.FileName);
-            myMediaPlayer.Play();
         }
 
         private void Show_Tags_Btn_Click(object sender, RoutedEventArgs e)
@@ -46,6 +47,39 @@ namespace MediaPlayer
             var title = currentFile.Tag.Title;
 
             tagNameBox.Text = title;
+        }
+
+        private void Play_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (myMediaPlayer.Source != null) && (mediaPlayerIsPlaying == false);
+        }
+
+        private void Play_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            myMediaPlayer.Play();
+            mediaPlayerIsPlaying = true;
+        }
+
+        private void Pause_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (myMediaPlayer.Source != null) && (mediaPlayerIsPlaying == true);
+        }
+
+        private void Pause_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            myMediaPlayer.Pause();
+            mediaPlayerIsPlaying = false;
+        }
+
+        private void Stop_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = (myMediaPlayer.Source != null) && (mediaPlayerIsPlaying == true);
+        }
+
+        private void Stop_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            myMediaPlayer.Stop();
+            mediaPlayerIsPlaying = false;
         }
     }
 }

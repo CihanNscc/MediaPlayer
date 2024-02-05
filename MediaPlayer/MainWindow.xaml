@@ -6,11 +6,25 @@
         xmlns:local="clr-namespace:MediaPlayer"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding x:Name="PlayCommand" Command="Play"
+                    CanExecute="Play_CanExecute"
+                    Executed="Play_Executed"></CommandBinding>
+        <CommandBinding x:Name="PauseCommand" Command="Pause"
+                    CanExecute="Pause_CanExecute"
+                    Executed="Pause_Executed"></CommandBinding>
+        <CommandBinding x:Name="StopCommand" Command="Stop"
+            CanExecute="Stop_CanExecute"
+            Executed="Stop_Executed"></CommandBinding>
+    </Window.CommandBindings>
     <StackPanel>
         <Button Content="Open FIle" FontSize="32" Width="Auto" Height="Auto" Margin="10" Click="Open_File_Btn_Click"></Button>
         <TextBlock x:Name="fileNameBox" FontSize="32"></TextBlock>
         <MediaElement x:Name="myMediaPlayer" UnloadedBehavior="Manual" LoadedBehavior="Manual"></MediaElement>
         <Button Content="Show Tags" FontSize="32" Width="Auto" Height="Auto" Margin="10" Click="Show_Tags_Btn_Click"></Button>
         <TextBlock x:Name="tagNameBox" FontSize="32"></TextBlock>
+        <Button Content="Play" FontSize="32" Width="Auto" Height="Auto" Margin="10" Command="Play"></Button>
+        <Button Content="Pause" FontSize="32" Width="Auto" Height="Auto" Margin="10" Command="Pause"></Button>
+        <Button Content="Stop" FontSize="32" Width="Auto" Height="Auto" Margin="10" Command="Stop"></Button>
     </StackPanel>
 </Window>
