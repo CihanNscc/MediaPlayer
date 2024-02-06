@@ -27,9 +27,10 @@ namespace MediaPlayer
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            tagTitleBox.IsReadOnly = false;
-            tagAlbumBox.IsReadOnly = false;
-            tagYearBox.IsReadOnly = false;
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.Edit_Tags();
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -42,7 +43,10 @@ namespace MediaPlayer
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.Cancel_Tags();
+            }
         }
     }
 }

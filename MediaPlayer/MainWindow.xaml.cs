@@ -26,14 +26,27 @@ namespace MediaPlayer
         public MainWindow()
         {
             InitializeComponent();
+
             playingButton.IsEnabled = false;
             tagsButton.IsEnabled = true;
             playingWindow.Visibility = Visibility.Visible;
             tagsWindow.Visibility = Visibility.Collapsed;
+            Tags_Editing_Enabled(false);
         }
 
         private void Open_File_Btn_Click(object sender, RoutedEventArgs e)
         {
+            if (myMediaPlayer.Source != null)
+            {
+                Stop_Playing();
+                Reset_Tags(false);
+            } else
+            {
+                Reset_Tags(true);
+            }
+
+            Tags_Editing_Enabled(false);
+
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
 
@@ -51,18 +64,12 @@ namespace MediaPlayer
 
         private void Show_Playing_Btn_Click(object sender, RoutedEventArgs e)
         {
-            playingButton.IsEnabled = false;
-            tagsButton.IsEnabled = true;
-            playingWindow.Visibility = Visibility.Visible;
-            tagsWindow.Visibility = Visibility.Collapsed;
+            Show_Now_Playing(true);
         }
 
         private void Show_Tags_Btn_Click(object sender, RoutedEventArgs e)
         {
-            playingButton.IsEnabled = true;
-            tagsButton.IsEnabled = false;
-            playingWindow.Visibility = Visibility.Collapsed;
-            tagsWindow.Visibility = Visibility.Visible;
+            Show_Now_Playing(false);
         }
 
         private void Play_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -97,28 +104,121 @@ namespace MediaPlayer
 
         private void Stop_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            Stop_Playing();
+        }
+
+        public void Show_Now_Playing(bool nowPlaying)
+        {
+            if (nowPlaying)
+            {
+                playingButton.IsEnabled = false;
+                tagsButton.IsEnabled = true;
+                playingWindow.Visibility = Visibility.Visible;
+                tagsWindow.Visibility = Visibility.Collapsed;
+            } else
+            {
+                playingButton.IsEnabled = true;
+                tagsButton.IsEnabled = false;
+                playingWindow.Visibility = Visibility.Collapsed;
+                tagsWindow.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void Stop_Playing()
+        {
             myMediaPlayer.Stop();
             mediaPlayerIsPlaying = false;
             mediaPlayerIsStopped = true;
             playingWindow.tagDisplayMessage.Text = "Stopped";
         }
 
-        public void Save_Tags()
+        public void Reset_Tags(bool clear)
         {
-            myMediaPlayer.Close();
-            currentFile.Tag.Title = tagsWindow.tagTitleBox.Text;
-            currentFile.Tag.Album = tagsWindow.tagAlbumBox.Text;
-
-            if (int.TryParse(tagsWindow.tagYearBox.Text, out int year))
+            if (clear)
             {
-                currentFile.Tag.Year = (uint)year;
+                tagsWindow.tagTitleBox.Text = "";
+                tagsWindow.tagAlbumBox.Text = "";
+                tagsWindow.tagYearBox.Text = "";
+            } else
+            {
+                tagsWindow.tagTitleBox.Text = currentFile.Tag.Title;
+                tagsWindow.tagAlbumBox.Text = currentFile.Tag.Album;
+                tagsWindow.tagYearBox.Text = currentFile.Tag.Year.ToString();
+            }
+        }
+
+        public void Tags_Editing_Enabled(bool editing)
+        {
+            if (editing)
+            {
+                tagsWindow.editButton.IsEnabled = false;
+                tagsWindow.saveButton.IsEnabled = true;
+                tagsWindow.cancelButton.IsEnabled = true;
+
+                tagsWindow.tagTitleBox.IsReadOnly = false;
+                tagsWindow.tagAlbumBox.IsReadOnly = false;
+                tagsWindow.tagYearBox.IsReadOnly = false;
             }
             else
             {
+                tagsWindow.editButton.IsEnabled = true;
+                tagsWindow.saveButton.IsEnabled = false;
+                tagsWindow.cancelButton.IsEnabled = false;
+
+                tagsWindow.tagTitleBox.IsReadOnly = true;
+                tagsWindow.tagAlbumBox.IsReadOnly = true;
+                tagsWindow.tagYearBox.IsReadOnly = true;
+            }
+        }
+
+        public void Edit_Tags()
+        {
+            tagsWindow.tagTitleBox.IsReadOnly = false;
+            tagsWindow.tagAlbumBox.IsReadOnly = false;
+            tagsWindow.tagYearBox.IsReadOnly = false;
+            Tags_Editing_Enabled(true);
+        }
+
+            public void Save_Tags()
+        {
+            if (int.TryParse(tagsWindow.tagYearBox.Text, out int year))
+            {
+                if (myMediaPlayer.Source != null)
+                {
+                    myMediaPlayer.Close();
+                    Tags_Editing_Enabled(false);
+
+                    currentFile.Tag.Title = tagsWindow.tagTitleBox.Text;
+                    currentFile.Tag.Album = tagsWindow.tagAlbumBox.Text;
+                    currentFile.Tag.Year = (uint)year;
+
+                    currentFile.Save();
+                } else
+                {
+                    Reset_Tags(true);
+                    Tags_Editing_Enabled(false);
+                    MessageBox.Show("No file has been chosen to save the tags for.");
+                }
+            }
+            else
+            {
+                Reset_Tags(false);
+                Tags_Editing_Enabled(false);
                 MessageBox.Show("Invalid year format. Please enter a valid number.");
             }
+        }
 
-            currentFile.Save();
-        } 
+        public void Cancel_Tags()
+        {
+            if (myMediaPlayer.Source != null)
+            {
+                Reset_Tags(false);
+            }
+            else
+            {
+                Reset_Tags(true);
+            }
+            Tags_Editing_Enabled(false);
+        }
     }
 }
