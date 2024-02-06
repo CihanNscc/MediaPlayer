@@ -17,20 +17,44 @@
             CanExecute="Stop_CanExecute"
             Executed="Stop_Executed"></CommandBinding>
     </Window.CommandBindings>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="DarkSlateBlue"></Setter>
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="BorderBrush" Value="AliceBlue"></Setter>
+            <Setter Property="Padding" Value="6"></Setter>
+            <Setter Property="Margin" Value="6"></Setter>
+            <Setter Property="BorderBrush" Value="LightSteelBlue"></Setter>
+            <Setter Property="BorderThickness" Value="2"></Setter>
+            <Setter Property="Foreground"  Value="AliceBlue"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+            <Setter Property="Foreground"  Value="DarkSlateBlue"></Setter>
+            <Setter Property="Padding" Value="4"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Lavender"></Setter>
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="TextWrapping" Value="Wrap"></Setter>
+            <Setter Property="Foreground"  Value="DarkSlateBlue"></Setter>
+            <Setter Property="Padding" Value="4"></Setter>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"></Setter>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="Foreground"  Value="DarkSlateBlue"></Setter>
+        </Style>
+    </Window.Resources>
     <StackPanel>
-        <Grid Width="500px" Margin="0, 0, 0, 30px">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-            <Button Grid.Column="0" Content="Open File" FontSize="16" Width="100px" Height="Auto" Margin="10" Click="Open_File_Btn_Click"></Button>
-            <Button Grid.Column="1" x:Name="playingButton" Content="Show Playing" FontSize="16" Width="100px" Height="Auto" Margin="10" Click="Show_Playing_Btn_Click"></Button>
-            <Button Grid.Column="2" x:Name="tagsButton" Content="Show Tags" FontSize="16" Width="100px" Height="Auto" Margin="10" Click="Show_Tags_Btn_Click"></Button>
-        </Grid>
+        <ToolBarTray DockPanel.Dock="Top" Margin="0, 0, 0, 30px">
+            <ToolBar>
+                <Button Grid.Column="0" Content="Open File" Margin="2" Click="Open_File_Btn_Click"></Button>
+                <Button Grid.Column="1" x:Name="playingButton" Content="Show Playing" Margin="2" Click="Show_Playing_Btn_Click"></Button>
+                <Button Grid.Column="2" x:Name="tagsButton" Content="Show Tags" Margin="2" Click="Show_Tags_Btn_Click"></Button>
+            </ToolBar>
+        </ToolBarTray>
         <local:TagsWindow x:Name="tagsWindow" />
         <local:PlayingWindow x:Name="playingWindow" />
         <MediaElement x:Name="myMediaPlayer" UnloadedBehavior="Manual" LoadedBehavior="Manual"></MediaElement>
@@ -43,9 +67,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Button Grid.Column="0" Content="Play" FontSize="16" Width="100px" Height="Auto" Margin="10" Command="Play"></Button>
-            <Button Grid.Column="1" Content="Pause" FontSize="16" Width="100px" Height="Auto" Margin="10" Command="Pause"></Button>
-            <Button Grid.Column="2" Content="Stop" FontSize="16" Width="100px" Height="Auto" Margin="10" Command="Stop"></Button>
+            <Button Grid.Column="0" Content="Play" Command="Play"></Button>
+            <Button Grid.Column="1" Content="Pause" Command="Pause"></Button>
+            <Button Grid.Column="2" Content="Stop" Command="Stop"></Button>
         </Grid>
     </StackPanel>
 </Window>
