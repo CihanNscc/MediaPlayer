@@ -50,9 +50,24 @@
     <StackPanel>
         <ToolBarTray DockPanel.Dock="Top" Margin="0, 0, 0, 30px">
             <ToolBar>
-                <Button Grid.Column="0" Content="Open File" Margin="2" Click="Open_File_Btn_Click"></Button>
-                <Button Grid.Column="1" x:Name="playingButton" Content="Show Playing" Margin="2" Click="Show_Playing_Btn_Click"></Button>
-                <Button Grid.Column="2" x:Name="tagsButton" Content="Show Tags" Margin="2" Click="Show_Tags_Btn_Click"></Button>
+                <Button Grid.Column="0" Margin="2" Click="Open_File_Btn_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/MediaPlayer;component/images/open_file.png" Width="20px" Height="20px"/>
+                        <TextBlock Margin="3,0,0,0">Open File</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="1" x:Name="playingButton" Margin="2" Click="Show_Playing_Btn_Click" IsEnabled="True">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/MediaPlayer;component/images/music_note.png" Width="20px" Height="20px"/>
+                        <TextBlock Margin="3,0,0,0">Show Playing</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2" x:Name="tagsButton" Margin="2" Click="Show_Tags_Btn_Click" IsEnabled="True">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/MediaPlayer;component/images/edit.png" Width="20px" Height="20px"/>
+                        <TextBlock Margin="3,0,0,0">Show Tags</TextBlock>
+                    </StackPanel>
+                </Button>
             </ToolBar>
         </ToolBarTray>
         <local:TagsWindow x:Name="tagsWindow" />

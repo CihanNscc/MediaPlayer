@@ -9,14 +9,15 @@
     <Grid Width="500px" Height="200px" Margin="0,0,0, 50px">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="File Name:" />
-        <TextBlock Grid.Column="1" Grid.Row="0"  x:Name="tagTitleDisplay"></TextBlock>
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="1"  x:Name="tagDisplayMessage"></TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="0"  x:Name="tagDisplayMessage"></TextBlock>
+        <Image Grid.Column="1" Grid.Row="0" Source="/MediaPlayer;component/images/headphones_banner.jpg" Width="375px" Height="150px"/>
+        <Label Grid.Column="0" Grid.Row="1" Content="File Name:" />
+        <TextBlock Grid.Column="1" Grid.Row="1"  x:Name="tagTitleDisplay"></TextBlock>
     </Grid>
 </UserControl>

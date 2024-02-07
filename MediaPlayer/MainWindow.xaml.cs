@@ -36,29 +36,37 @@ namespace MediaPlayer
 
         private void Open_File_Btn_Click(object sender, RoutedEventArgs e)
         {
-            if (myMediaPlayer.Source != null)
+            try
             {
-                Stop_Playing();
-                Reset_Tags(false);
-            } else
-            {
-                Reset_Tags(true);
+                if (myMediaPlayer.Source != null)
+                {
+                    Stop_Playing();
+                    Reset_Tags(false);
+                }
+                else
+                {
+                    Reset_Tags(true);
+                }
+
+                Tags_Editing_Enabled(false);
+
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+
+                if (ofd.ShowDialog() == true)
+                {
+                    currentFile = TagLib.File.Create(ofd.FileName);
+
+                    myMediaPlayer.Source = new Uri(ofd.FileName);
+                    playingWindow.tagTitleDisplay.Text = ofd.FileName;
+                    tagsWindow.tagTitleBox.Text = currentFile.Tag.Title;
+                    tagsWindow.tagAlbumBox.Text = currentFile.Tag.Album;
+                    tagsWindow.tagYearBox.Text = currentFile.Tag.Year.ToString();
+                }
             }
-
-            Tags_Editing_Enabled(false);
-
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
-
-            if (ofd.ShowDialog() == true)
+            catch (Exception ex)
             {
-                currentFile = TagLib.File.Create(ofd.FileName);
-
-                myMediaPlayer.Source = new Uri(ofd.FileName);
-                playingWindow.tagTitleDisplay.Text = ofd.FileName;
-                tagsWindow.tagTitleBox.Text = currentFile.Tag.Title;
-                tagsWindow.tagAlbumBox.Text = currentFile.Tag.Album;
-                tagsWindow.tagYearBox.Text = currentFile.Tag.Year.ToString();
+                MessageBox.Show($"An error occurred while opening the file: {ex.Message}");
             }
         }
 
@@ -115,7 +123,8 @@ namespace MediaPlayer
                 tagsButton.IsEnabled = true;
                 playingWindow.Visibility = Visibility.Visible;
                 tagsWindow.Visibility = Visibility.Collapsed;
-            } else
+            }
+            else
             {
                 playingButton.IsEnabled = true;
                 tagsButton.IsEnabled = false;
@@ -139,11 +148,19 @@ namespace MediaPlayer
                 tagsWindow.tagTitleBox.Text = "";
                 tagsWindow.tagAlbumBox.Text = "";
                 tagsWindow.tagYearBox.Text = "";
-            } else
+            }
+            else
             {
-                tagsWindow.tagTitleBox.Text = currentFile.Tag.Title;
-                tagsWindow.tagAlbumBox.Text = currentFile.Tag.Album;
-                tagsWindow.tagYearBox.Text = currentFile.Tag.Year.ToString();
+                try
+                {
+                    tagsWindow.tagTitleBox.Text = currentFile.Tag.Title;
+                    tagsWindow.tagAlbumBox.Text = currentFile.Tag.Album;
+                    tagsWindow.tagYearBox.Text = currentFile.Tag.Year.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while saving the tags: {ex.Message}");
+                }
             }
         }
 
@@ -177,23 +194,33 @@ namespace MediaPlayer
             tagsWindow.tagAlbumBox.IsReadOnly = false;
             tagsWindow.tagYearBox.IsReadOnly = false;
             Tags_Editing_Enabled(true);
+            Stop_Playing();
         }
 
-            public void Save_Tags()
+        public void Save_Tags()
         {
+
             if (int.TryParse(tagsWindow.tagYearBox.Text, out int year))
             {
                 if (myMediaPlayer.Source != null)
                 {
-                    myMediaPlayer.Close();
-                    Tags_Editing_Enabled(false);
+                    try
+                    {
+                        myMediaPlayer.Close();
+                        Tags_Editing_Enabled(false);
 
-                    currentFile.Tag.Title = tagsWindow.tagTitleBox.Text;
-                    currentFile.Tag.Album = tagsWindow.tagAlbumBox.Text;
-                    currentFile.Tag.Year = (uint)year;
+                        currentFile.Tag.Title = tagsWindow.tagTitleBox.Text;
+                        currentFile.Tag.Album = tagsWindow.tagAlbumBox.Text;
+                        currentFile.Tag.Year = (uint)year;
 
-                    currentFile.Save();
-                } else
+                        currentFile.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"An error occurred while saving the tags: {ex.Message}");
+                    }
+                }
+                else
                 {
                     Reset_Tags(true);
                     Tags_Editing_Enabled(false);
@@ -202,10 +229,18 @@ namespace MediaPlayer
             }
             else
             {
-                Reset_Tags(false);
                 Tags_Editing_Enabled(false);
                 MessageBox.Show("Invalid year format. Please enter a valid number.");
+                if (myMediaPlayer.Source != null)
+                {
+                    Reset_Tags(false);
+                }
+                else
+                {
+                    Reset_Tags(true);
+                }
             }
+
         }
 
         public void Cancel_Tags()

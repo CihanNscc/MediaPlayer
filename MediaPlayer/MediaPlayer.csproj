@@ -9,7 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\edit.png" />
+    <None Remove="images\headphones.jpg" />
+    <None Remove="images\headphones_banner.jpg" />
+    <None Remove="images\musicnote.png" />
+    <None Remove="images\music_note.png" />
+    <None Remove="images\open_file.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\edit.png" />
+    <Resource Include="images\headphones_banner.jpg" />
+    <Resource Include="images\music_note.png" />
+    <Resource Include="images\open_file.png" />
   </ItemGroup>
 
 </Project>
