@@ -224,7 +224,7 @@ namespace MediaPlayer
                 {
                     Reset_Tags(true);
                     Tags_Editing_Enabled(false);
-                    MessageBox.Show("No file has been chosen to save the tags for.");
+                    MessageBox.Show("No file has been chosen to save the tags.");
                 }
             }
             else
